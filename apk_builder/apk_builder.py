@@ -100,12 +100,13 @@ try:
         except IndexError:
             print "No launchable activity found"
             sys.exit(1)
-        launchable_activity_path = os.path.join(WORK_DIR, package_name, "smali", launchable_activity.replace(".", "/") + ".smali")
 
 	new_apk_path = WORK_DIR + "/" + package_name + ".apk"
 	subprocess.call(["cp", apk_path, new_apk_path])
 	subprocess.call(["apktool", "--quiet", "decode", new_apk_path])
 	subprocess.call(["mv", package_name, WORK_DIR])
+
+        launchable_activity_path = glob.glob(os.path.join(WORK_DIR, package_name, "smali*", launchable_activity.replace(".", "/") + ".smali"))[0]
 
 	if not "uses-permission: name='android.permission.INTERNET'" in apk_permissions:
 		print "[I] APK needs INTERNET permission"
